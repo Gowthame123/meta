@@ -1,0 +1,7 @@
+streamlit
+google-generativeai
+pandas
+python-dotenv
+base64
+pathlib
+Pillow
