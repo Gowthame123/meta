@@ -10,7 +10,7 @@ import os
 db.init_db()
 
 # Gemini API key configuration
-API_KEY = "AIzaSyBffkG-kwsbxAF0m-6VoMwX-8gaNNubFmg"
+API_KEY = st.secrets.get("GOOGLE_API_KEY", "AIzaSyBffkG-kwsbxAF0m-6VoMwX-8gaNNubFmg")  # Fallback to hardcoded for local dev
 
 client = genai.Client(api_key=API_KEY)
 
@@ -729,7 +729,7 @@ def show():
         elif any(keyword in prompt.lower() for keyword in ["show details", "view", "look up", "get details"]):
             st.session_state.last_prompt_is_get = True
             full_prompt = f"{SYSTEM_PROMPTS['show_details']}\nUser input: {prompt_to_parse}"
-            response = client.models.generate_content(model="gemini-flash-latest", contents=full_prompt)
+            response = client.models.generate_content(model="gemini-2.0-flash", contents=full_prompt)
             
             try:
                 response_text = response.text.replace("```json", "").replace("```", "").strip()
@@ -818,7 +818,7 @@ def show():
                         prompt_to_parse = prompt[len("create"):].strip()
 
                     full_prompt = f"{SYSTEM_PROMPTS[prompt_key]}\nUser input: {prompt_to_parse}"
-                    response = client.models.generate_content(model="gemini-flash-latest", contents=full_prompt)
+                    response = client.models.generate_content(model="gemini-2.0-flash", contents=full_prompt)
 
                     try:
                         response_text = response.text.replace("```json", "").replace("```", "").strip()
