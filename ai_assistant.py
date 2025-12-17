@@ -1,11 +1,10 @@
 import streamlit as st
-import google.generativeai as genai
+import google.genai as genai
 import json
 import re
 import database as db
 import sqlite3
 import os
-from dotenv import load_dotenv
 
 # Ensure the database is initialized
 db.init_db()
@@ -13,8 +12,7 @@ db.init_db()
 # Gemini API key configuration
 API_KEY = "AIzaSyBffkG-kwsbxAF0m-6VoMwX-8gaNNubFmg"
 
-genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel(model_name="gemini-2.0-flash")
+client = genai.Client(api_key=API_KEY)
 
 
 # System Prompts for different tables and operations
@@ -731,7 +729,7 @@ def show():
         elif any(keyword in prompt.lower() for keyword in ["show details", "view", "look up", "get details"]):
             st.session_state.last_prompt_is_get = True
             full_prompt = f"{SYSTEM_PROMPTS['show_details']}\nUser input: {prompt_to_parse}"
-            response = model.generate_content(full_prompt)
+            response = client.models.generate_content(model="gemini-flash-latest", contents=full_prompt)
             
             try:
                 response_text = response.text.replace("```json", "").replace("```", "").strip()
@@ -820,7 +818,7 @@ def show():
                         prompt_to_parse = prompt[len("create"):].strip()
 
                     full_prompt = f"{SYSTEM_PROMPTS[prompt_key]}\nUser input: {prompt_to_parse}"
-                    response = model.generate_content(full_prompt)
+                    response = client.models.generate_content(model="gemini-flash-latest", contents=full_prompt)
 
                     try:
                         response_text = response.text.replace("```json", "").replace("```", "").strip()
