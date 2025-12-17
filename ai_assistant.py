@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 db.init_db()
 
 # Gemini API key configuration
-API_KEY = "AIzaSyCu-h8l_UysqzVO8x143YlvY_0J32QgMk0"
+API_KEY = "AIzaSyA16aeBQI9Lq2xDpMcF5nblYL0x2r8aK5k"
 
 genai.configure(api_key=API_KEY)
 model = genai.GenerativeModel(model_name="gemini-2.0-flash")
@@ -865,4 +865,5 @@ def show():
                         st.session_state.messages.append({"role": "assistant", "content": "An unexpected error occurred. Please try again."})
 
                         st.rerun()                   
+
 
